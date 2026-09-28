@@ -7,7 +7,8 @@ public class Main {
     public static void main(String[] args) {
         DbConnection dbConnection = new DbConnection();
         ArtistDao artistDao = new ArtistDao(dbConnection);
-        artistDao.searchArtist("Cash G");
+        artistDao.searchArtist("LANY");
+
     }
 
 
