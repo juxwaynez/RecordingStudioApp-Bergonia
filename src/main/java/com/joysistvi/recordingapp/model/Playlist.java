@@ -1,17 +1,22 @@
 package com.joysistvi.recordingapp.model;
 
-public class Artist {
+public class Playlist {
 
     private int id;
     private String name;
+    private String description;
 
-    public Artist(String name) {
+    // CONSTRUCTOR WITHOUT ID
+    public Playlist(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
-    public Artist(int id, String name) {
+    // CONSTRUCTOR WITH ID
+    public Playlist(int id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     // GETTERS AND SETTERS
@@ -31,11 +36,21 @@ public class Artist {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     @Override
     public String toString() {
-        return "Artist{" +
+        return "Playlist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.joysistvi.recordingapp.cliview;
 
 import com.joysistvi.recordingapp.controller.ArtistController;
 import com.joysistvi.recordingapp.model.Artist;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,7 +27,10 @@ public class ArtistView {
                 case 2 -> searchArtist();
                 case 3 -> addArtist();
                 case 4 -> updateArtist();
-
+                case 5 -> archiveArtist();
+                case 6 -> restoreArtist();
+                case 7 -> deleteArtist();
+                case 8 -> viewAllArchivedArtists();
                 case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice. Try Again");
             }
@@ -37,7 +39,7 @@ public class ArtistView {
                 System.out.println("\nPress Enter to continue...");
                 scanner.nextLine();
             }
-        } while (choice !=0);
+        } while (choice != 0);
     }
 
     // PRINT MENU
@@ -54,7 +56,7 @@ public class ArtistView {
         System.out.println("0. Back");
     }
 
-    public int  promptChoice() {
+    public int promptChoice() {
         System.out.println("Choice: ");
         return readInt();
     }
@@ -67,13 +69,11 @@ public class ArtistView {
             } catch (RuntimeException e) {
                 System.out.println("Please enter a valid number: ");
             }
-
-
         }
     }
 
     // VIEW ALL ARTISTS
-    private void viewAllArtist () {
+    private void viewAllArtist() {
         System.out.println("\n===== View All Artists =====");
         List<Artist> artists = artistController.handleViewAllArtists();
         printArtists(artists);
@@ -84,7 +84,7 @@ public class ArtistView {
         System.out.println("\n===== Search Artists =====");
         System.out.println("Enter name: ");
         String keyword = scanner.nextLine();
-        List<Artist> artists = artistController.handleViewAllArtists();
+        List<Artist> artists = artistController.handleViewAllArtists(); // Note: Update to controller search handler when ready
         printArtists(artists);
     }
 
@@ -103,7 +103,6 @@ public class ArtistView {
             System.out.println();
             viewAllArtist(); // read-after-write
         }
-
     }
 
     // UPDATE ARTIST
@@ -140,6 +139,92 @@ public class ArtistView {
         }
     }
 
+    // ARCHIVE ARTIST
+    private void archiveArtist() {
+        System.out.println("\n===== Archive Artist =====");
+        viewAllArtist();
+
+        System.out.println("Artist ID to archive: ");
+        int id = readInt();
+
+        Artist current = artistController.handleGetArtistById(id);
+
+        if (current == null) {
+            System.out.println("No Artist found with ID " + id + ". Please check the ID and try again.");
+            return;
+        }
+
+        boolean isSuccess = artistController.handleArchiveArtist(id);
+        System.out.println(isSuccess ? "Artist archived successfully." : "Failed to archive artist.");
+
+        if (isSuccess) {
+            System.out.println();
+            viewAllArtist();
+        }
+    }
+
+    // RESTORE ARTIST
+    private void restoreArtist() {
+        System.out.println("\n===== Restore Artist =====");
+        viewAllArchivedArtists();
+
+        System.out.println("Artist ID to restore: ");
+        int id = readInt();
+
+        Artist current = artistController.handleGetArtistById(id);
+
+        if (current == null) {
+            System.out.println("No Artist found with ID " + id + ". Please check the ID and try again.");
+            return;
+        }
+
+        boolean isSuccess = artistController.handleRestoreArtist(id);
+        System.out.println(isSuccess ? "Artist restored successfully." : "Failed to restore artist.");
+
+        if (isSuccess) {
+            System.out.println();
+            viewAllArchivedArtists();
+        }
+    }
+
+    // DELETE ARTIST
+    private void deleteArtist() {
+        System.out.println("\n===== Delete Artist =====");
+        viewAllArtist();
+
+        System.out.println("Artist ID to delete: ");
+        int id = readInt();
+
+        Artist current = artistController.handleGetArtistById(id);
+
+        if (current == null) {
+            System.out.println("No Artist found with ID " + id + ". Please check the ID and try again.");
+            return;
+        }
+
+        System.out.println("Are you sure you want to delete artist '" + current.getName() + "'? (Y/N): ");
+        String confirm = scanner.nextLine().trim();
+
+        if (confirm.equalsIgnoreCase("Y")) {
+            boolean isSuccess = artistController.handleDeleteArtist(id);
+            System.out.println(isSuccess ? "Artist deleted permanently." : "Failed to delete artist.");
+
+            if (isSuccess) {
+                System.out.println();
+                viewAllArtist();
+            }
+        } else {
+            System.out.println("Deletion canceled.");
+        }
+    }
+
+    // VIEW ALL ARCHIVED ARTISTS
+    private void viewAllArchivedArtists() {
+        System.out.println("\n===== View All Archived Artists =====");
+        List<Artist> archivedArtists = artistController.handleViewArchivedArtists();
+        printArtists(archivedArtists);
+    }
+
     // PRINT ARTIST
     public void printArtists(List<Artist> artists) {
         // VALIDATION
@@ -159,8 +244,5 @@ public class ArtistView {
         }
 
         System.out.println(border);
-
     }
-
-    }
-
+}
