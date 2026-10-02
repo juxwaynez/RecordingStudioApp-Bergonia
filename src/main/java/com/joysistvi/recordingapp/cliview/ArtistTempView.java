@@ -6,17 +6,15 @@ import com.joysistvi.recordingapp.model.Artist;
 import java.util.List;
 import java.util.Scanner;
 
-public class ArtistView {
+public class ArtistTempView {
 
     private final ArtistController artistController; // Composition
     private final Scanner scanner;
-    private final boolean isAdmin;
 
     // Constructor injection
-    public ArtistView(ArtistController artistController, Scanner scanner, boolean isAdmin) {
+    public ArtistTempView(ArtistController artistController, Scanner scanner) {
         this.artistController = artistController;
         this.scanner = scanner;
-        this.isAdmin = isAdmin;
     }
 
     public void run() {
@@ -29,10 +27,10 @@ public class ArtistView {
             switch (choice) {
                 case 1 -> viewAllArtists();
                 case 2 -> searchArtist();
-                case 3 -> { if (isAdmin) addArtist(); else denyAccess(); }
-                case 4 -> { if (isAdmin) updateArtist(); else denyAccess(); }
-                case 5 -> { if (isAdmin) deleteArtist(); else denyAccess(); }
-                case 0 -> System.out.println("Returning to dashboard...");
+                case 3 -> addArtist();
+                case 4 -> updateArtist();
+                case 5 -> deleteArtist();
+                case 0 -> System.out.println("Returning to main menu...");
                 default -> System.out.println("Invalid choice. Try again.");
             }
 
@@ -44,14 +42,12 @@ public class ArtistView {
     }
 
     private void printMenu() {
-        System.out.println("\n===== ARTIST CATALOG =====");
+        System.out.println("\n===== ARTIST MANAGEMENT =====");
         System.out.println("1. View All Artists");
         System.out.println("2. Search Artist");
-        if (isAdmin) {
-            System.out.println("3. Add Artist");
-            System.out.println("4. Update Artist");
-            System.out.println("5. Delete Artist");
-        }
+        System.out.println("3. Add Artist");
+        System.out.println("4. Update Artist");
+        System.out.println("5. Delete Artist");
         System.out.println("0. Back");
     }
 
@@ -61,6 +57,7 @@ public class ArtistView {
     }
 
     private void viewAllArtists() {
+        System.out.println("\n----- Artist Table -----");
         List<Artist> artists = artistController.handleViewAllArtists();
         printArtists(artists);
     }
@@ -100,6 +97,7 @@ public class ArtistView {
         // Get the current name so we can keep it if the admin just presses Enter
         Artist current = artistController.handleGetArtistById(id);
         if (current == null) {
+            System.out.println("No artist found with ID " + id + ". Please check the ID and try again.");
             return;
         }
 
@@ -183,12 +181,14 @@ public class ArtistView {
 
     // Reads an int safely, re-prompting on invalid input, then consumes the trailing newline
     private int readInt() {
-        while (!scanner.hasNextInt()) {
-            System.out.print("Please enter a valid number: ");
-            scanner.next();
+        while (true) {
+            String input = scanner.nextLine();
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.print("Please enter a valid number: ");
+            }
         }
-        int value = scanner.nextInt();
-        scanner.nextLine(); // consume leftover newline
-        return value;
     }
+
 }

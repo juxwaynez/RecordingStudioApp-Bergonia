@@ -1,10 +1,10 @@
-package com.joysistvi.recordingapp.service;
+package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.model.Artist;
 
 import java.util.List;
 
-public interface ArtistService {
+public interface ArtistRepository {
 
     List<Artist> getAllArtists();
 
@@ -12,7 +12,7 @@ public interface ArtistService {
 
     Artist getArtistById(int id);
 
-    boolean addArtist(Artist artist);
+    boolean createArtist(Artist artist);
 
     boolean updateArtist(Artist artist);
 
@@ -22,5 +22,5 @@ public interface ArtistService {
 
     boolean restoreArtist(int id);
 
-    List<Artist> getArchivedArtists();
+    List<Artist> readArchivedArtist();
 }

@@ -1,10 +1,10 @@
-package com.joysistvi.recordingapp.service;
+package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserRepository {
 
     List<User> getAllUsers();
 

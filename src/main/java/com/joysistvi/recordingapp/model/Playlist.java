@@ -3,23 +3,21 @@ package com.joysistvi.recordingapp.model;
 public class Playlist {
 
     private int id;
-    private String name;
-    private String description;
+    private String dateCreated;
+    private int userId;
 
-    // CONSTRUCTOR WITHOUT ID
-    public Playlist(String name, String description) {
-        this.name = name;
-        this.description = description;
+    // Used when creating a new playlist
+    public Playlist(int userId) {
+        this.userId = userId;
     }
 
-    // CONSTRUCTOR WITH ID
-    public Playlist(int id, String name, String description) {
+    // Used when reading from the database
+    public Playlist(int id, String dateCreated, int userId) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.dateCreated = dateCreated;
+        this.userId = userId;
     }
 
-    // GETTERS AND SETTERS
     public int getId() {
         return id;
     }
@@ -28,29 +26,19 @@ public class Playlist {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public String getDescription() {
-        return description;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

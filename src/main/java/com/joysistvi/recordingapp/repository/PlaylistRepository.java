@@ -1,11 +1,11 @@
-package com.joysistvi.recordingapp.service;
+package com.joysistvi.recordingapp.repository;
 
 import com.joysistvi.recordingapp.model.Playlist;
 import com.joysistvi.recordingapp.model.Song;
 
 import java.util.List;
 
-public interface PlaylistService {
+public interface PlaylistRepository {
 
     List<Playlist> getAllPlaylists();
 
